@@ -1,0 +1,65 @@
+name: 'mybi_dbt_showcase'
+version: '1.0.0'
+config-version: 2
+
+profile: 'mybi_dbt_showcase'
+
+models:
+    mybi_dbt_core:
+        enabled: false
+        staging:
+            amocrm:
+                enabled: true
+            direct:
+                enabled: true
+            ga:
+                enabled: true
+            general:
+                enabled: true
+            mytarget:
+                enabled: true
+
+    mybi_dbt_showcase:
+        +materialized: table
+        intermediate:
+            +schema: intermediate
+            +tags: ["intermediate"]
+        marts:
+            +tags: ["marts"]
+
+    metrics:
+      dbt_metrics_default_calendar:
+        enabled: false
+        
+vars:
+    mybi_host: 'rc1a-uifqtk602qck1es3.mdb.yandexcloud.net'
+    mybi_port: 6432
+    mybi_database: 'mybi-ilmwayp'
+    mybi_user: 'guest-ilmwayp'
+    mybi_password: 'nAYIVOexUj6s'
+    mybi_schema: 'public'
+
+
+    mybi_dbt_core:
+        limit_data_days: 5
+
+        dbt_source_database: mybi
+        dbt_source_schema: mybi
+
+        account_id_amocrm: 46021
+        account_id_direct: 46105
+        account_id_ga: 45377
+        account_id_mytarget: 46637
+        
+
+model-paths: ["models"]
+analysis-paths: ["analyses"]
+test-paths: ["tests"]
+seed-paths: ["seeds"]
+macro-paths: ["macros"]
+snapshot-paths: ["snapshots"]
+
+target-path: "target"  # directory which will store compiled SQL files
+clean-targets:         # directories to be removed by `dbt clean`
+    - "target"
+    - "dbt_packages"
